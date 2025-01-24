@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Code, MessageSquare, Database, Share2, Hash } from "lucide-react";
 import ChannelSummaries from "@/components/ChannelSummaries";
-import TenstorrentLogo from "./components/tenstorrent";
+import TenstorrentLogo from "@/components/tenstorrent";
 
 // Tenstorrent color palette constants
 const COLORS = {
