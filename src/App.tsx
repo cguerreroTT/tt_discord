@@ -117,11 +117,13 @@ const App = () => {
         `${modalUrl}/discord/${guildId}?limit=${messageLimit}`,
         { method: "POST" },
       );
+      console.log("Fetching Discord URL:", `${modalUrl}/discord/${guildId}?limit=${messageLimit}`);
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.error || "Failed to scrape server");
       }
       alert("Server scraped successfully!");
+      console.log("Server scraped successfully!");
     } catch (err) {
       setError(err.message);
     } finally {
