@@ -74,4 +74,17 @@ const TenstorrentLogo = ({ className = "w-40 h-auto" }) => {
   );
 };
 
-export default TenstorrentLogo;
+const Header = () => {
+  return (
+    <div className="flex flex-col items-left gap-4 mb-8">
+      <TenstorrentLogo />
+      <div>
+        <h1 className="text-3xl font-bold text-[#4B456E]">
+          Discord AI Assistant
+        </h1>
+      </div>
+    </div>
+  )
+};
+    
+export default Header;

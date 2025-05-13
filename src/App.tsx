@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Code, MessageSquare, Database, Share2, Hash } from "lucide-react";
 import ChannelSummaries from "@/components/ChannelSummaries";
-import TenstorrentLogo from "@/components/Tenstorrent";
+import Header from "@/components/Tenstorrent";
 
 // Tenstorrent color palette constants
 const COLORS = {
@@ -79,6 +79,81 @@ const App = () => {
   // Get Modal URL from environment variables
   const modalUrl = import.meta.env.VITE_MODAL_URL;
 
+  // Password login screen
+  const [authenticated, setAuthenticated] = useState(false);
+  const [inputPassword, setInputPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(`${modalUrl}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password: inputPassword }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Login failed");
+      }
+
+      const data = await response.json();
+
+      if (data.authenticated) {
+        setAuthenticated(true);
+      } else {
+        alert("Incorrect password.");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("An error occurred during login.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+
+  if (!authenticated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-[#EDEFF9] to-white flex flex-col">
+        <div className="container mx-auto py-6 max-w-6xl">
+          <Header />
+        </div>
+        <div className="flex flex-1 items-center justify-center">
+          <form
+            onSubmit={handleLogin}
+            className="bg-white p-6 rounded shadow-md max-w-md w-full"
+          >
+            <h2 className="text-xl mb-4 text-[#4B456E] font-semibold text-center">
+              Enter Password to Continue
+            </h2>
+            <input
+              type="password"
+              value={inputPassword}
+              onChange={(e) => setInputPassword(e.target.value)}
+              className="border border-gray-300 p-2 w-full mb-4 rounded"
+              placeholder="Password"
+            />
+            <button
+              type="submit"
+              className={`text-white px-4 py-2 rounded w-full transition-all duration-200 ${isSubmitting
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-[#7C68FA] hover:bg-[#4B456E]"
+                }`}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Authenticating..." : "Submit"}
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   // Handler for submitting queries to the Discord analysis system
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -135,14 +210,7 @@ const App = () => {
     <div className="min-h-screen bg-gradient-to-b from-[#EDEFF9] to-white">
       <div className="container mx-auto py-6 max-w-6xl">
         {/* Header section with logo and title */}
-        <div className="flex flex-col items-left gap-4 mb-8">
-          <TenstorrentLogo />
-          <div>
-            <h1 className="text-3xl font-bold text-[#4B456E]">
-              Discord AI Assistant
-            </h1>
-          </div>
-        </div>
+        <Header />
 
         {/* Main content tabs */}
         <Tabs defaultValue="summaries" className="mb-6">

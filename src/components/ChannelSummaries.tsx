@@ -152,7 +152,7 @@ const ChannelSummaries = ({ modalUrl }) => {
             </div>
           )}
         </div>
-        <Button
+        {/* <Button
           onClick={handleRefresh}
           disabled={refreshing}
           className="ml-auto bg-[#7C68FA] hover:bg-[#4B456E]"
@@ -162,7 +162,7 @@ const ChannelSummaries = ({ modalUrl }) => {
             className={`h-4 w-4 mr-2 ${refreshing ? "animate-spin" : ""}`}
           />
           {refreshing ? "Refreshing..." : "Refresh Summaries"}
-        </Button>
+        </Button> */}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
