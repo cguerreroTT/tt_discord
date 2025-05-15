@@ -22,6 +22,9 @@ const ChannelSummaryCard = ({ channel }) => {
   return (
     <Card className="hover:shadow-lg transition-all hover:border-[#7C68FA]">
       <CardHeader>
+        <div className="text-xs text-slate-500 mb-1">
+          Summary generated {cacheAge} hours ago
+        </div>
         <CardTitle className="flex items-center gap-2 text-lg">
           <Hash className="h-5 w-5 text-[#7C68FA]" />
           <span className="font-mono text-[#4B456E]">
@@ -56,9 +59,6 @@ const ChannelSummaryCard = ({ channel }) => {
           <Markdown className="prose-sm lg:prose">{channel.summary}</Markdown>
         </div>
       </CardContent>
-      <CardFooter className="text-xs text-slate-500">
-        Summary generated {cacheAge} hours ago
-      </CardFooter>
     </Card>
   );
 };
@@ -81,8 +81,7 @@ const ChannelSummarySkeletonCard = () => (
   </Card>
 );
 
-const ChannelSummaries = ({ modalUrl }) => {
-  const [summaries, setSummaries] = useState([]);
+const ChannelSummaries = ({ modalUrl, summaries, setSummaries }) => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
@@ -121,7 +120,11 @@ const ChannelSummaries = ({ modalUrl }) => {
   };
 
   useEffect(() => {
-    fetchSummaries();
+    if (!summaries) {
+      fetchSummaries();
+    } else {
+      setLoading(false);
+    }
     // Refresh cached data every 5 minutes
     // const interval = setInterval(() => fetchSummaries(), 5 * 60 * 1000);
     // return () => clearInterval(interval);

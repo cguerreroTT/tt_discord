@@ -75,6 +75,7 @@ const App = () => {
   const [scraping, setScraping] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [summaries, setSummaries] = useState(null);
 
   // Get Modal URL from environment variables
   const modalUrl = import.meta.env.VITE_MODAL_URL;
@@ -249,7 +250,11 @@ const App = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ChannelSummaries modalUrl={modalUrl} />
+                <ChannelSummaries
+                  modalUrl={modalUrl}
+                  summaries={summaries}
+                  setSummaries={setSummaries}
+                />
               </CardContent>
             </Card>
           </TabsContent>
@@ -340,7 +345,7 @@ const App = () => {
                 </Card>
 
                 {/* Query Analysis Process Steps */}
-                <DataFlowStep
+                {/* <DataFlowStep
                   title="1. Query Analysis"
                   description="The system analyzes your query to determine the best approach"
                   icon={MessageSquare}
@@ -365,10 +370,10 @@ const App = () => {
                       ? "SQL Query Generation"
                       : "RAG Similarity Search"}
                   </div>
-                </DataFlowStep>
+                </DataFlowStep> */}
 
                 {/* SQL Query Step (if applicable) */}
-                {result.chat_history
+                {/* {result.chat_history
                   .find((m) => m.tool_calls)
                   ?.tool_calls[0]?.function?.arguments.includes(
                     '"approach":"sql"',
@@ -389,10 +394,10 @@ const App = () => {
                       </code>
                     </pre>
                   </DataFlowStep>
-                )}
+                )} */}
 
                 {/* Complete Interaction Flow */}
-                <DataFlowStep
+                {/* <DataFlowStep
                   title="4. Complete Interaction Flow"
                   description="The full conversation and data flow between components"
                   icon={Code}
@@ -423,7 +428,7 @@ const App = () => {
                       </ScrollArea>
                     </TabsContent>
                   </Tabs>
-                </DataFlowStep>
+                </DataFlowStep> */}
               </div>
             )}
           </TabsContent>
