@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Code, MessageSquare, Database, Share2, Hash } from "lucide-react";
+import { Code, MessageSquare, Database, Share2, RefreshCw } from "lucide-react";
 import ChannelSummaries from "@/components/ChannelSummaries";
 import Header from "@/components/Tenstorrent";
 
@@ -84,6 +84,13 @@ const App = () => {
   const [inputPassword, setInputPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    // Ping backend to warm up cold start
+    fetch(`${modalUrl}/`).catch((err) =>
+      console.log("Warm-up request failed:", err)
+    );
+  }, []);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -140,12 +147,12 @@ const App = () => {
             />
             <button
               type="submit"
-              className={`text-white px-4 py-2 rounded w-full transition-all duration-200 ${isSubmitting
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-[#7C68FA] hover:bg-[#4B456E]"
-                }`}
               disabled={isSubmitting}
+              className="bg-[#7C68FA] hover:bg-[#4B456E] text-white px-4 py-2 rounded w-full flex items-center justify-center"
             >
+              {isSubmitting && (
+                <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+              )}
               {isSubmitting ? "Authenticating..." : "Submit"}
             </button>
           </form>
@@ -238,7 +245,7 @@ const App = () => {
                 </CardTitle>
                 <CardDescription>
                   Overview of discussions and activity in each channel over the
-                  past week
+                  past week.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -297,8 +304,9 @@ const App = () => {
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="bg-[#7C68FA] hover:bg-[#4B456E]"
+                  className="bg-[#7C68FA] hover:bg-[#4B456E] flex items-center justify-center"
                 >
+                  {loading && <RefreshCw className="h-4 w-4 mr-2 animate-spin" />}
                   {loading ? "Processing..." : "Submit"}
                 </Button>
               </div>

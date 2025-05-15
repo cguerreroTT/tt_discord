@@ -86,7 +86,6 @@ const ChannelSummaries = ({ modalUrl }) => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
-  const [lastUpdate, setLastUpdate] = useState(null);
 
   const fetchSummaries = async (forceRefresh = false) => {
     try {
@@ -107,7 +106,6 @@ const ChannelSummaries = ({ modalUrl }) => {
       console.log("Received data:", data); // Debug log to verify response
 
       setSummaries(data.summaries);
-      setLastUpdate(new Date().toLocaleTimeString());
     } catch (err) {
       console.error("Error fetching summaries:", err); // Debug log
       setError(err.message);
@@ -125,8 +123,8 @@ const ChannelSummaries = ({ modalUrl }) => {
   useEffect(() => {
     fetchSummaries();
     // Refresh cached data every 5 minutes
-    const interval = setInterval(() => fetchSummaries(), 5 * 60 * 1000);
-    return () => clearInterval(interval);
+    // const interval = setInterval(() => fetchSummaries(), 5 * 60 * 1000);
+    // return () => clearInterval(interval);
   }, [modalUrl]);
 
   if (error) {
@@ -139,20 +137,15 @@ const ChannelSummaries = ({ modalUrl }) => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center mb-4">
+      {/* <div className="flex justify-between items-center mb-4">
         <div className="space-y-1">
-          {lastUpdate && (
-            <div className="text-sm text-slate-600">
-              Last updated: {lastUpdate}
-            </div>
-          )}
           {refreshing && (
             <div className="text-sm text-[#7C68FA]">
               Generating fresh summaries...
             </div>
           )}
         </div>
-        {/* <Button
+        <Button
           onClick={handleRefresh}
           disabled={refreshing}
           className="ml-auto bg-[#7C68FA] hover:bg-[#4B456E]"
@@ -162,8 +155,8 @@ const ChannelSummaries = ({ modalUrl }) => {
             className={`h-4 w-4 mr-2 ${refreshing ? "animate-spin" : ""}`}
           />
           {refreshing ? "Refreshing..." : "Refresh Summaries"}
-        </Button> */}
-      </div>
+        </Button>
+      </div> */}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {loading
