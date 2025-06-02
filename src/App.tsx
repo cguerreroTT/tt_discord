@@ -85,11 +85,15 @@ const App = () => {
   const [inputPassword, setInputPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Temporary solution for preventing cold-starts on Modal
   useEffect(() => {
-    // Ping backend to warm up cold start
-    fetch(`${modalUrl}/`).catch((err) =>
-      console.log("Warm-up request failed:", err)
-    );
+    const interval = setInterval(() => {
+      fetch(`${modalUrl}/`).catch((err) =>
+        console.log("Warm-up request failed:", err)
+      );
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
